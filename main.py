@@ -8,7 +8,8 @@ from src.huffman import (
     calcular_frecuencias,
     construir_arbol_huffman,
     generar_codigos,
-    representacion_textual
+    representacion_textual, generar_png_frecuencias,
+    generar_png_huffman,
 )
 
 
@@ -102,6 +103,11 @@ def main():
 
                print("\nÁrbol (representación textual):")
                print(representacion_textual(raiz))
+            
+               generar_png_huffman(raiz, "huffman_tree.png")
+
+
+               generar_png_frecuencias(frecuencias, "frecuencias.png")
 
 if __name__ == "__main__":
     main()

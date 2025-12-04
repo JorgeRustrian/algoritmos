@@ -1,4 +1,6 @@
 import heapq
+from graphviz import Digraph
+import os
 
 class NodoHuffman:
     def __init__(self, caracter, frecuencia):
@@ -88,3 +90,76 @@ def representacion_textual(raiz, nivel=0):
     texto += representacion_textual(raiz.izq, nivel + 1)
 
     return texto
+
+
+
+
+
+
+
+
+def generar_png_huffman(raiz, nombre_archivo="huffman_tree.png"):
+
+    carpeta_output = "./docs/evidencias"
+   
+
+    g = Digraph(format="png")
+    g.attr("node", shape="circle")
+
+    def agregar_nodos(nodo, nombre):
+        """Agrega nodos y conexiones recursivamente."""
+        if nodo is None:
+            return
+
+        if nodo.caracter is None:
+            etiqueta = f"*\\n{nodo.frecuencia}"
+        else:
+            if nodo.caracter == " ":
+                etiqueta = f"espacio\\n{nodo.frecuencia}"
+            else:
+                etiqueta = f"{nodo.caracter}\\n{nodo.frecuencia}"
+
+        g.node(nombre, etiqueta)
+
+       
+        if nodo.izq:
+            g.edge(nombre, nombre + "0")
+            agregar_nodos(nodo.izq, nombre + "0")
+
+      
+        if nodo.der:
+            g.edge(nombre, nombre + "1")
+            agregar_nodos(nodo.der, nombre + "1")
+
+    agregar_nodos(raiz, "R")
+
+    ruta_png = os.path.join(carpeta_output, nombre_archivo)
+    g.render(filename=ruta_png, cleanup=True)
+
+    print(f">> Árbol Huffman PNG generado: {ruta_png}")
+
+
+
+
+def generar_png_frecuencias(frecuencias, nombre_archivo="frecuencias.png"):
+
+    carpeta_output = "./docs/evidencias"
+   
+
+    g = Digraph(format="png")
+    g.attr(rankdir="LR")  # barras de izquierda a derecha
+    g.attr("node", shape="box", height="0.5")
+
+    for c, f in frecuencias.items():
+        if c == " ":
+            etiqueta = f"espacio ({f})"
+        else:
+            etiqueta = f"{c} ({f})"
+
+        ancho = str(f * 0.3)  # escala para barras
+        g.node(etiqueta, label=etiqueta, width=ancho, style="filled", fillcolor="lightblue")
+
+    ruta_png = os.path.join(carpeta_output, nombre_archivo)
+    g.render(filename=ruta_png, cleanup=True)
+
+    print(f">> Frecuencias PNG generado: {ruta_png}")
