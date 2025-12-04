@@ -7,7 +7,7 @@ def dijkstra(grafo, origen):
     if origen not in grafo:
         return None, "El nodo origen no existe en el grafo."
 
-    # Inicializaciones
+    
     distancias = {nodo: float("inf") for nodo in grafo}
     distancias[origen] = 0
 
